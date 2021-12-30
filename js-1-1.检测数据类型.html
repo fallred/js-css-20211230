@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+
+<body>
+    <script>
+        /*
+         //1，typeof-->包括数据类型的字符串,例如:"number"，“string”,"object","function"
+         typeof null-->"object"
+         typeof []-->"object" "typeof不能具体检测object下细分的数据类型
+
+         2,instanceof -->检测某一个实例是否属于这个类，返回 true/false
+         3,constructor
+         //弊端：
+         1）由于所有实例都是Object这个类的实例，所以实例Instanceof Object都是true
+         2)在类的继承中我们用instanceof检测数据类型是不准确的
+         var ary=[];
+         console.log(ary instanceof Array);
+         console.log(ary instanceof Object);
+         console.log(ary.constructor===Array);
+
+
+        function Fn(){
+
+        }
+        Fn.prototype=new Array;
+        var f=new Fn;
+        console.dir(f);
+        console.log(f instanceof Array);//true  */
+
+        //4)Object.prototype.toString.call()
+        //toString:在JS中很多种数据类型都有toString这个方法，但是这个方法并不都是转换为字符串
+        //console.log()--->把需要输出的内容，先调用自己的toString方法转换为字符串然后弹出
+        //        12.toString();
+        //        (new Number(12).toString())
+        //        console.log(true);   true
+        //    console.log(null); "null"
+        //        console.log(undefined)  "undefined"
+        //     console.log([])     ""
+        //        console.log(function sum(){var total=12;});--->"function sum(){var total=12;}"
+        //        console.log({name:zhufeng});-->"[object Object]"
+        //在object原型上定义的toString方法并不是直接的把对象转化为字符串，而是返回当前返回当前对象所属类的详细信息--->[object Object]
+
+        function isType(value, type) {
+            return Object.prototype.toString.call(value) === "[object " + type + "]";
+        }
+        console.log(isType([], "Array"));
+        console.log(isType(3, "Array"));
+        console.log(isType(3, "Number"));
+        console.log(isType(null, "Null"));
+        console.log(isType(undefined, "Undefined"));
+        console.log(isType({ name: "zhufeng" }, "Object"));
+    </script>
+</body>
+
+</html>

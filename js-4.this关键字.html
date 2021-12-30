@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+</head>
+
+<body>
+</body>
+</html>
+<script type="text/ecmascript">
+/*
+ 不管闭包函数 套在哪里执行，this关键字都是window
+*/
+window.number = 2;
+var obj = {
+	'number' : 4,
+	'dbl':(function(){
+		console.log("obj1:"+this.number);
+		this.number *= 2;
+		console.log("obj1:"+this.number);
+		console.log(number);
+		number=number*2;//迷惑人的，没有用。这里number是闭包里面私有的变量number,number预解释了，此时还没有赋值，number=undefined,执行number=number*2这句会报错。报错了不会影响下面的执行
+		console.log(number);
+		var number=3;
+		return function() {
+			this.number *= 2;
+			number*=2;
+			console.log("obj return:"+number);
+		 }
+	  })()
+ };
+var db1 = obj.dbl;//obj指向方法，此时方法的描述，并没有运行
+//请问这会儿window.number的值是多少
+console.log("window.number1:"+window.number);
+db1();//请问会弹出什么结果
+obj.dbl();//请问会弹出什么结果
+
+console.log("window.number2:"+window.number);//这会的值是多少 
+console.log("obj.number:"+obj.number);   //这会的值是多少
+</script>

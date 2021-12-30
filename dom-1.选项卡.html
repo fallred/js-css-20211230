@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>选项卡</title>
+    <style>
+        body,
+        div,
+        ul,
+        li {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, helvetica, sans-serif;
+            font-size: 14px;
+        }
+
+        ul li {
+            list-style: none;
+        }
+
+        #tab {
+            margin: 10px auto 0;
+            width: 500px;
+        }
+
+        #tab ul li {
+            float: left;
+            margin-right: 10px;
+            cursor: pointer;
+            width: 100px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        #tab ul {
+            position: relative;
+            top: 1px;
+            z-index: 100;
+        }
+
+        #tab ul li.selected {
+            background: -webkit-linear-gradient(top left, #CC0000, #00a300, #0000ff);
+            border-bottom: none;
+        }
+
+        #tab div {
+            height: 100px;
+            line-height: 100px;
+            text-align: center;
+            border: 1px solid #ddd;
+            clear: both;
+            display: none;
+
+        }
+
+        #tab div.selected {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="tab">
+        <ul>
+            <li class="selected">视频</li>
+            <li>综艺</li>
+            <li>秒拍</li>
+        </ul>
+        <div class="selected">视频内容</div>
+        <div>综艺内容</div>
+        <div>秒拍内容</div>
+    </div>
+</body>
+
+</html>
+<script>
+    var oTab = document.getElementById("tab");
+    var oLis = oTab.getElementsByTagName("li");
+    var oDivs = oTab.getElementsByTagName("div");
+    function tabChange(nIndex) {
+        for (var i = 0; i < oLis.length; i++) {
+            oLis[i].className = "";
+            oDivs[i].className = "";
+        }
+        oLis[nIndex].className = "selected";
+        oDivs[nIndex].className = "selected";
+    }
+    for (var i = 0; i < oLis.length; i++) {
+        oLis[i].zhufeng = i;
+        oLis[i].onmouseover = function () {
+            tabChange(this.zhufeng);
+        }
+    }
+</script>

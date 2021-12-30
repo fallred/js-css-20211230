@@ -1,0 +1,48 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>DOM</title>
+	<style type="text/css">
+		div {
+			width: 100px;
+			height: 100px;
+			margin: 10px;
+			background: #F00;
+		}
+		a {
+		}
+		.div2 {
+			height: auto;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="div1">11111111</div>
+	<div class="div2" style="background:green">22222222
+		<div id='id1' class="div2-1">2222222的子div</div>
+	</div>
+	<div style="background:yellow">33333333</div>
+	ssdgfdgfhgf
+	<div>44444444</div>
+	<a>链接</a>
+</body>
+
+</html>
+<script type="text/ecmascript">
+	// var oDivs = document.getElementsByTagName('div');
+	var oDivs = document.querySelectorAll('div');
+	console.log('oDivs:', oDivs);
+	var link = document.querySelector('a');
+	link.href='http://www.baidu.com';
+
+	const oId1 = document.getElementById('id1');
+	console.log('oId1:', oId1);
+
+	var para = document.createElement('p');
+	para.textContent = 'We hope you enjoyed the ride.';
+	oId1.appendChild(para);
+</script>

@@ -1,0 +1,187 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>DOM动画--焦点图(自动轮播，点击切换)</title>
+	<style type="text/css">
+		/* 最外一层只显示一个div的宽度，其他的隐藏*/
+		#outer {
+			width: 450px;
+			height: 250px;
+			margin: 50px auto;
+			position: relative;
+			background: pink;
+			overflow: hidden;
+		}
+
+		/*最里面的一层是用来放所有的div的，定位所有的idv,距离outer的左上角为left:0,top:0主要靠它来向左移动，而改变在outer里面显示哪一张。比如向左位移-450，则显示在outer里面的就是第二个div*/
+		#inner {
+			width: 2250px;
+			height: 250px;
+			position: absolute;
+			top: 0px;
+			left: 0px;
+		}
+
+		/*每个需要显示的图片*/
+		#inner div {
+			width: 450px;
+			height: 250px;
+			float: left;
+			line-height: 250px;
+			background: green;
+			font-size: 48px;
+			font-weight: bold;
+			color: #fff;
+			text-align: center;
+		}
+
+		/*每张图片上显示索引按钮,确定宽高，定位，去列表默认的列表样式*/
+		#outer ul {
+			width: 240px;
+			position: absolute;
+			right: 50px;
+			bottom: 20px;
+			list-style: none;
+		}
+
+		/*每个li的宽高,相隔距离*/
+		#outer ul li {
+			width: 30px;
+			height: 30px;
+			line-height: 30px;
+			border-radius: 50%;
+			border: solid 3px blue;
+			margin: 5px;
+			float: left;
+			font-size: 24px;
+			font-weight: bold;
+			cursor: pointer;
+			text-align: center;
+		}
+
+		.high {
+			background: #f90;
+			color: red;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="outer">
+		<div id="inner">
+			<div>1111111</div>
+			<div style="background:black">2222222</div>
+			<div style="background:yellow">3333333</div>
+			<div style="background:red">4444444</div>
+			<div style="background:purple">555555</div>
+		</div>
+		<ul>
+			<li class="high">1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+		</ul>
+	</div>
+</body>
+
+</html>
+<script type="text/ecmascript">
+	function move(ele, attr, target, fn) {
+		clearTimeout(ele.timer);
+		var interval = 30;
+		_move();
+		function _move() {
+			//获取元素ele，attr属性的样式
+			var current = getCss(ele, attr);
+			//定义速度
+			var nSpeed = (target - current) / 10;
+			//对速度进行取整
+			nSpeed = nSpeed > 0 ? Math.ceil(nSpeed) : Math.floor(nSpeed);
+			//让元素移动
+			ele.style[attr] = current + nSpeed + 'px';
+			//判断速度是否为0
+			if (nSpeed) {
+				ele.timer = window.setTimeout(_move, interval);
+			} else {
+				ele.timer = null;//将定时器清空
+				if (typeof fn == 'function') {
+					fn.call(ele);//调用回调函数
+				}
+			}
+		}
+
+	}
+
+	//获取当前的CSS样式
+	function getCss(ele, attr) {
+		if (typeof getComputedStyle == 'function') {
+			return parseFloat(window.getComputedStyle(ele, null)[attr]);
+		} else {
+			return parseFloat(ele.currentStyle[attr]);
+		}
+	}
+
+	function changeHigh(step) {
+		for (var i = 0; i < oLis.length; i++) {
+			oLis.item(i).className = '';
+		}
+		oLis.item(step).className = 'high';
+	}
+
+	function autoMove() {
+		//每调用一次自动播放函数，step应该-1;也就是下一个要显示的div索引要-1
+		step++;//方向向左，就是每次索引号减1   显示顺序是 54321(6,1副本)5继续、、、
+		if (step >= 6) {	//允许运动到索引为-1的div
+			//切换到第6张上来(其实是第一张的副本)，定时时间还没有到，仍然在第一张上，切换到第一张之后，就跳到第一张副本上了。你感觉不到其实是第一张的副本
+			oInner.style.left = 0;
+			//下一张要运动到的图片,从第1张副本往第5张上运动（此时保证了方向是向左）
+			step = 0;
+		}
+		//调用运动函数
+		move(oInner, 'left', step * -450);
+		if (step <= 4) {
+			changeHigh(step);
+		}
+		else {
+			changeHigh(0);
+		}
+	}
+
+	
+	//改变量用来保存当前的div索引
+	var step = 0;
+	var timer = null;
+	var oInner = document.getElementById('inner');
+	var oLis = document.getElementById('outer').getElementsByTagName('li');
+	//创建第一个div
+	var oFirstDiv = oInner.getElementsByTagName('div').item(0);
+	//创建第一个div的副本，并将其追加到oInner里面。也就是所有div的最后面
+	oInner.appendChild(oFirstDiv.cloneNode(true));
+	//更改inner的宽度
+	oInner.style.width = oInner.offsetWidth + oFirstDiv.offsetWidth + 'px';
+	//循环遍历li
+	for (var i = 0; i < oLis.length; i++) {
+		//记录下来被点击的li的索引,将i保存在每一个li的一个自定义属性index上
+		oLis.item(i).index = i;
+		//li点击事件
+		oLis.item(i).onclick = function () {
+			//先清空定时器
+			clearInterval(timer);
+			//执行move方法，运动到当前被点击的那一个索引div
+			move(oInner, 'left', this.index * -450)
+			//更改当前的step位置,好让自动轮播知道从哪一个div开始播放，下一个要显示的div是谁
+			step = this.index;
+			changeHigh(step);
+			//调用定时器,开始播放
+			timer = window.setInterval(autoMove, 5000);
+		};
+	}
+
+	//如果用户没有点击li,则应该让他自己播放，调用定时器
+	timer = window.setInterval(autoMove, 3000);
+
+</script>

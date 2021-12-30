@@ -1,0 +1,41 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>无标题文档</title>
+</head>
+
+<body>
+</body>
+
+</html>
+<script type="text/ecmascript">
+	/*
+	作用域链：从里往外找。里面可以用外面的变量，但是外面不能用里面的*/
+	var name;
+	//  (function(i){
+	// 	 console.log(i);
+	// 	 var name='';
+	// 	 function fn(){
+	// 	   var name='xxx';
+	// 	   console.log(name)	
+	// 	 }
+	// 	 fn();
+	//   })(9)
+	var outerFn;
+
+	function fn() {
+		var n = 4;
+		console.log(n);//n=4
+		function innerFn() { n++; console.log(n); }//定义了一个innerFn,此时并没有执行
+		outerFn = innerFn; //outerFn指向了innerFn栈内存里的函数。fn里的函数innerFn的内存被上级作用域里的变量占着，导致fn内存释放不了。fn内存释放不了，那就导致里面的变量释放不了 
+		//fn()运行的时候就执行了for循环,i=100
+		for (var i = 0; i < 100; i++) {
+			n++; //n循环累加100次
+		}
+	}
+	fn();//n=104
+	outerFn();//此时执行innerFn(),n++  n=105
+</script>

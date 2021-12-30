@@ -1,0 +1,135 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>动画---弹性导航菜单(flex)</title>
+	<style type="text/css">
+		#nav {
+			position: relative;
+		}
+
+		#nav ul {
+			width: 400px;
+			height: 30px;
+			color: #000;
+			list-style: none;
+			text-align: center;
+			line-height: 30px;
+			margin: 0;
+			padding: 0;
+		}
+
+		#nav ul li {
+			float: left;
+			width: 100px;
+			background: #ccc;
+			font-weight: bold;
+			font-size: 14px;
+		}
+
+		#effect {
+			width: 100px;
+			height: 30px;
+			position: absolute;
+			left: 0;
+			top: 0;
+			overflow: hidden;
+		}
+
+		#effect #inner {
+			position: absolute;
+			left: 0;
+			top: 0;
+		}
+
+		#effect #inner li {
+			/*  低权重问题：id权重：100，class权重：10 html标签权重:1  */
+			background: #f90;
+			color: #fff;
+
+		}
+	</style>
+</head>
+
+<body>
+	<div id="nav">
+		<ul id="myul">
+			<li>首页</li>
+			<li>菜单1</li>
+			<li>菜单2</li>
+			<li>菜单3</li>
+		</ul>
+		<div id="effect">
+			<ul id="inner">
+				<li>首页</li>
+				<li>菜单1</li>
+				<li>菜单2</li>
+				<li>菜单3</li>
+			</ul>
+		</div>
+	</div>
+</body>
+
+</html>
+<script>
+	var oLis = document.getElementById('nav').getElementsByTagName('li');
+	oLis.item(0).onmouseover = function () { flex(0) };
+	oLis.item(1).onmouseover = function () { flex(100) };
+	oLis.item(2).onmouseover = function () { flex(200) };
+	oLis.item(3).onmouseover = function () { flex(300) };
+
+	/*for(var i=0;i<oLis.length;i++){
+		//用闭包
+		;(function(i){
+			oLis.item(i).onmouseover=function(){flex(i*100);}
+		  })(i);
+		  
+		  oLis.item(i).onclick=function(){
+			   var nIndex=0;
+			   var p=this.previousSibling;
+			   while(p){
+				   if(p.nodeType==1){
+						nIndex++;
+					   }
+				   }
+				flex(nIndex*100);
+			  }
+		 } */
+	var nSpeed = 0;
+	var step = 0;
+	var timer = null;
+	var oEffect = document.getElementById('effect');
+	var oInner = document.getElementById('inner');
+
+	function out(step) {
+		console.log(step);
+		flex(100 * step);
+	}
+	function myClick(step) {
+		window.step = step;
+		console.log(step);
+	}
+	function flex(target) {
+		clearTimeout(timer);//动画积累问题
+		nSpeed += (target - oEffect.offsetLeft) / 8;
+		nSpeed *= .9;
+		var val = oEffect.offsetLeft + nSpeed;//effect往右移动的距离
+		oEffect.style.left = val + 'px';//effect往右移动
+		oInner.style.left = -val + 'px';//effect往左移动
+		if (Math.abs(nSpeed) < 0.5 && target == oEffect.offsetLeft) {
+			console.log('stop');
+			oEffect.onmouseout = function () {
+				console.log(step);
+				out.call(oEffect, step);//oEffect.out(step);
+			}
+			oEffect.onclick = function () {
+				myClick(target / 100);
+			}
+		} else {
+			timer = window.setTimeout(function () { flex(target) }, 30);
+		}
+	}
+
+</script>

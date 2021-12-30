@@ -1,0 +1,18 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+</head>
+
+<body>
+</body>
+</html>
+<script type="text/ecmascript">
+  // function a(){console.log('function');}
+ console.log(a);//弹出方法的引用 
+  var a=3
+ function a(){console.log('function');}//function被预备解释了。函数的预解释是将整个函数都定义了
+  // var a=3;//变量a将函数a覆盖了,这句在前还是在后，都会先弹出函数
+  console.log(a);
+</script>

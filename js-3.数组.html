@@ -1,0 +1,51 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>无标题文档</title>
+</head>
+
+<body>
+</body>
+
+</html>
+<script>
+  var a = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  //赋值数组,不会改变原数组的值
+  var a1 = a.slice(5, 10);//起始的索引位置，第二个参数,不包含结束索引位置
+  console.log(a1);
+  /*
+  var str="01234567890";
+  str.substring(5,9);
+  str.substr(5,4);//第二个参数是截取的长度
+  */
+  var a2 = a.concat([1, 2, 3], [23, 4, 55]);
+  console.log(a.join());//数组转化为字符串
+  console.log(a.toString());
+  //str.split();//字符串转化为数组
+
+  a.push();//a.unshift();
+  a.pop();//a.shift();
+  var a3 = a.splice(3, 3, 'x', 'y', 'z');//改变原数组
+  console.log(a3);//返回删掉的数
+  console.log(a);
+  console.log(a.sort());
+
+  var aNum = [33, 77, 11, 22, 7, 78];
+  aNum.sort(function (a, b) {
+    console.log(aNum);
+    return a - b;
+  });
+  console.log(aNum);
+
+  //sort排序底层是插入排序
+  var aNum = ['33px', '77px', '11px', '22px', '7px', '78px'];
+  aNum.sort(function (a, b) {
+    console.log(aNum);
+    console.log(a + ";" + b);
+    return parseInt(b) - parseInt(a);
+  });
+  console.log(aNum);
+</script>

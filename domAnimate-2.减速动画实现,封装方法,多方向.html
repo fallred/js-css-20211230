@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>动画实现</title>
+<style type="text/css">
+  #div1{
+	 background:red;
+	 position:absolute;
+	 top:0;
+	 left:0;
+	 width:100px;
+	 height:100px;
+   }
+   span{   
+		position:absolute;
+		top:110px;
+		margin:10px;
+		width:50px;
+		height:50px
+	}
+	#left{
+	 width:50px;
+	 height:50px;
+	 background:#030;	
+	 left:400px;
+    }
+	#right{
+	 width:50px;
+	 height:50px;
+	 background:#030;	
+	 right:400px;
+	}
+</style>
+</head>
+
+<body>
+  <div id="div1"></div>
+  <span id="left">left</span>
+  <span id="right">right</span>
+</body>
+</html>
+<script>
+   var oDiv=document.getElementById('div1');
+   //var nSpeed=50;
+   var target=900;//终点
+   var timer=null;
+   function getCss(ele,attr){
+	  if(window.getComputedStyle){
+	   //标准浏览器
+	     return parseFloat(window.getComputedStyle(ele,null)[attr]);//parseFloat()去掉单位
+	  }else{//IE678
+		 return parseFloat(ele.currentStyle[attr]);  
+	  }   
+	}
+   function move(ele,attr,target){
+	  //清楚动画积累问题
+	  clearTimeout(timer);
+	  //nSpeed*=90;
+	  var currPos=getCss(ele,attr);
+      var nSpeed=(target-currPos)/10;
+	  if(nSpeed){//js语法的缺点，做浮点运算精确度问题、
+	     nSpeed=nSpeed>0?Math.ceil(nSpeed):Math.floor(nSpeed);
+	     oDiv.style[attr]=currPos+nSpeed+"px";
+         timer=window.setTimeout(function(){move(ele,attr,target)},60);
+       }else{
+		  timer=null;//判断是否在动画中，做动画的依据   
+	   }
+   }
+   //div1.onclick=move;
+   left.onclick=function(){
+	   if(!timer){
+		  move(oDiv,'left',0);   
+		}
+	}
+   right.onclick=function(){
+	   if(!timer){
+		 move(oDiv,'left',900);   
+	   }   
+    }
+</script>

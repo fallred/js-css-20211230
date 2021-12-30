@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+</head>
+
+<body>
+</body>
+</html>
+<script type="text/ecmascript">
+//单例模式  模型  java--->构造函数私有化，类.static方法 、 new 构造函数().非static方法
+//js-->在js函数里面，new 构造函数（）只能创建唯一一个实例，内存地址一样。
+  var single=(function(){
+  	  function Construct(){}
+  	  var unique;
+  	  function getInstance(){
+  	  	if(unique==undefined){
+  	  		unique=new Construct();
+  	  	}
+  	  	return unique;
+  	  }
+   return {getInstance:getInstance}
+  })
+//方法一：对象直接量方式
+var single={
+  attr:1,
+  getInstance:function(){return this.arr;}
+};
+var single1=single;
+var single2=single;
+//方法二：构造函数内部判断
+function Construct(){
+	if(Construct.unique!=undefined){
+		return Construct.unique;
+	}
+	this.name="ql";
+	this.age="22";
+	Construct.unique=this;
+}
+var t1=new Construct();
+var t2=new Construct();
+//方法三:闭包方式
+var single=(function(){
+	function Construct(){}
+	var unique;
+	unique=new Construct();
+	return unique;
+})();
+</script>

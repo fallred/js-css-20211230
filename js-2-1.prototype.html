@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+</html>
+<script>
+    function Fn(){
+      this.x=10;
+      this.f=function(){console.log(this.x);}
+    }
+    Fn.prototype={
+        x:20,
+        g:function(){console.log(this.x);}
+    };
+
+    var f1=new Fn();
+    var f2=new Fn();
+    console.log(f1._proto_==f2._proto_);//true
+    console.log(f1._proto_==Function.prototype);//false
+    console.log(f1.f==f2.f);//false
+    console.log(f1.g==f2.g);//true
+    console.log(f1 instanceof Fn);//true
+    console.log(f2 instanceof Object);//true
+</script>

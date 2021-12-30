@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>信封动画</title>
+    <style type="text/css">
+        .anchortip-inplayer-close,
+        .anchorlevel-lead--userview  .anchorlevel-lead-close,
+        .anchorlevel-lead--open .anchorlevel-lead-closebtn,
+        .anchorlevel-lead-btn {
+            background: url(https://gh-fe.oss-cn-beijing.aliyuncs.com/gtbg-fe/css3-demo/anchorlevelsp.png) no-repeat 0 0;
+        }
+        .anchorlevel-lead--anchorview {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+            top: 0;
+            left: 0;
+        }
+
+        .anchorlevel-lead--anchorview .anchorlevel-lead-mask {
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            opacity: 0.5;
+            filter: alpha(opacity=50);
+        }
+
+        .anchorlevel-lead--anchorview .anchorlevel-lead-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: 1;
+            width: 700px;
+            height: 410px;
+            margin-left: -350px;
+            margin-top: -178px;
+        }
+
+        .anchorlevel-lead--anchorview .anchorlevel-lead-btn {
+            position: absolute;
+            left: 274px;
+            bottom: 25px;
+            width: 146px;
+            height: 136px;
+            z-index: 31;
+        }
+
+        .anchorlevel-lead--anchorview .anchorlevel-lead-light,
+        .anchorlevel-lead--anchorview .anchorlevel-lead-ribbon,
+        .anchorlevel-lead--anchorview .anchorlevel-lead-closebtn,
+        .anchorlevel-lead--anchorview .anchorlevel-lead-letterpaper {
+            display: none;
+        }
+
+        .anchorlevel-lead-letterbg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            width: 699px;
+            height: 410px;
+            background: #2d2d50;
+            border-radius: 10px;
+        }
+
+
+        .anchorlevel-lead--close .anchorlevel-lead-btn {
+            background-position: 0 0;
+        }
+
+        .anchorlevel-lead--close .anchorlevel-lead-ribbon2 {
+            display: block;
+            position: absolute;
+            right: 334px;
+            bottom: -2px;
+            z-index: 25;
+            width: 29px;
+            height: 415px;
+            background: url(https://gh-fe.oss-cn-beijing.aliyuncs.com/gtbg-fe/css3-demo/ribbon3.png?v=20170215);
+        }
+
+        .anchorlevel-lead--open .anchorlevel-lead-btn {
+            background-position: 0 -295px;
+        }
+
+        .anchorlevel-lead--open .anchorlevel-lead-btn:hover {
+            background-position: 0 -147px;
+        }
+
+        .anchorlevel-lead--open .anchorlevel-lead-ribbon,
+        .anchorlevel-lead--open .anchorlevel-lead-closebtn,
+        .anchorlevel-lead--open .anchorlevel-lead-light,
+        .anchorlevel-lead--open .anchorlevel-lead-letterpaper {
+            display: block;
+        }
+
+        /*lettercover start*/
+        .anchorlevel-lead-lettercover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 21;
+            width: 700px;
+            height: 320px;
+
+            -webkit-transform-style: preserve-3d;
+            -o-transform-style: preserve-3d;
+            -moz-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+
+            -webkit-perspective: 1000;
+            -moz-perspective: 1000;
+            -ms-perspective: 1000;
+            perspective: 1000;
+
+            -ms-transform: perspective(1000px);
+            -moz-transform: perspective(1000px);
+        }
+
+        .anchorlevel-lead--open .anchorlevel-lead-lettercover {
+            opacity: 0\9\0;
+            filter: alpha(opacity=0);
+        }
+
+        .anchorlevelletter-animate .anchorlevel-lead-lettercover {
+            -webkit-animation: lettercoverFlipX 2.5s ease-in-out 0.1s 1 normal forwards;
+            -o-animation: lettercoverFlipX 2.5s ease-in-out 0.1s 1 normal forwards;
+            -moz-animation: lettercoverFlipX 2.5s ease-in-out 0.1s 1 normal forwards;
+            animation: lettercoverFlipX 2.5s ease-in-out 0.1s 1 normal forwards;
+        }
+
+        .anchorlevel-lead-flipper {
+            position: relative;
+            width: 700px;
+            height: 320px;
+        }
+
+        /*信封盖子翻转动画*/
+        @-webkit-keyframes lettercoverFlipX {
+            0% {
+                z-index: 21;
+            }
+
+            25% {
+                z-index: 21;
+            }
+
+            50% {
+                z-index: 21;
+            }
+
+            51% {
+                z-index: 14;
+            }
+
+            99% {
+                z-index: 14;
+            }
+
+            100% {
+                z-index: -1;
+            }
+        }
+
+        @-o-keyframes lettercoverFlipX {
+            0% {
+                z-index: 21;
+            }
+
+            25% {
+                z-index: 21;
+            }
+
+            50% {
+                z-index: 21;
+            }
+
+            51% {
+                z-index: 14;
+            }
+
+            99% {
+                z-index: 14;
+            }
+
+            100% {
+                z-index: -1;
+            }
+        }
+
+        @-moz-keyframes lettercoverFlipX {
+            0% {
+                z-index: 21;
+            }
+
+            25% {
+                z-index: 21;
+            }
+
+            50% {
+                z-index: 21;
+            }
+
+            51% {
+                z-index: 14;
+            }
+
+            99% {
+                z-index: 14;
+            }
+
+            100% {
+                z-index: -1;
+            }
+        }
+
+        @keyframes lettercoverFlipX {
+            0% {
+                z-index: 21;
+            }
+
+            25% {
+                z-index: 21;
+            }
+
+            50% {
+                z-index: 21;
+            }
+
+            51% {
+                z-index: 14;
+            }
+
+            99% {
+                z-index: 14;
+            }
+
+            100% {
+                z-index: -1;
+            }
+        }
+
+        /*信封盖子正面向上翻转动画*/
+        @-webkit-keyframes lettercoverfront {
+            0% {
+                -webkit-transform: rotate3d(1, 0, 0, 0deg);
+                transform: rotate3d(1, 0, 0, 0deg);
+                z-index: 2;
+                opacity: 1;
+                -moz-opacity: 1;
+            }
+
+            25% {
+                -webkit-transform: rotate3d(1, 0, 0, 90deg);
+                transform: rotate3d(1, 0, 0, 90deg);
+                z-index: 2;
+                opacity: 1;
+                -moz-opacity: 1;
+            }
+
+            26% {
+                z-index: 1;
+                opacity: 0;
+                -moz-opacity: 0;
+            }
+
+            100% {
+                -webkit-transform: rotate3d(1, 0, 0, 360deg);
+                transform: rotate3d(1, 0, 0, 360deg);
+                z-index: 1;
+                opacity: 0;
+                -moz-opacity: 0;
+            }
+        }
+
+        @-o-keyframes lettercoverfront {
+            0% {
+                -webkit-transform: rotate3d(1, 0, 0, 0deg);
+                transform: rotate3d(1, 0, 0, 0deg);
+                z-index: 2;
+                opacity: 1;
+                -moz-opacity: 1;
+            }
+
+            25% {
+                -webkit-transform: rotate3d(1, 0, 0, 90deg);
+                transform: rotate3d(1, 0, 0, 90deg);
+                z-index: 2;
+                opacity: 1;
+                -moz-opacity: 1;
+            }
+
+            26% {
+                z-index: 1;
+                opacity: 0;
+                -moz-opacity: 0;
+            }
+
+            100% {
+                -webkit-transform: rotate3d(1, 0, 0, 360deg);
+                transform: rotate3d(1, 0, 0, 360deg);
+                z-index: 1;
+                opacity: 0;
+                -moz-opacity: 0;
+            }
+        }
+
+        @-moz-keyframes lettercoverfront {
+            0% {
+                -webkit-transform: rotate3d(1, 0, 0, 0deg);
+                transform: rotate3d(1, 0, 0, 0deg);
+                z-index: 2;
+                opacity: 1;
+                -moz-opacity: 1;
+            }
+
+            25% {
+                -webkit-transform: rotate3d(1, 0, 0, 90deg);
+                transform: rotate3d(1, 0, 0, 90deg);
+                z-index: 2;
+                opacity: 1;
+                -moz-opacity: 1;
+            }
+
+            26% {
+                z-index: 1;
+                opacity: 0;
+                -moz-opacity: 0;
+            }
+
+            100% {
+                -webkit-transform: rotate3d(1, 0, 0, 360deg);
+                transform: rotate3d(1, 0, 0, 360deg);
+                z-index: 1;
+                opacity: 0;
+                -moz-opacity: 0;
+            }
+        }
+
+        @keyframes lettercoverfront {
+            0% {
+                -webkit-transform: rotate3d(1, 0, 0, 0deg);
+                transform: rotate3d(1, 0, 0, 0deg);
+                z-index: 2;
+                opacity: 1;
+                -moz-opacity: 1;
+            }
+
+            25% {
+                -webkit-transform: rotate3d(1, 0, 0, 90deg);
+                transform: rotate3d(1, 0, 0, 90deg);
+                z-index: 2;
+                opacity: 1;
+                -moz-opacity: 1;
+            }
+
+            26% {
+                z-index: 1;
+                opacity: 0;
+                -moz-opacity: 0;
+            }
+
+            100% {
+                -webkit-transform: rotate3d(1, 0, 0, 360deg);
+                transform: rotate3d(1, 0, 0, 360deg);
+                z-index: 1;
+                opacity: 0;
+                -moz-opacity: 0;
+            }
+        }
+
+        /*信封盖子反面向上翻转动画*/
+        @-webkit-keyframes lettercoverbehind {
+            0% {
+                -webkit-transform: rotate3d(1, 0, 0, 0deg);
+                transform: rotate3d(1, 0, 0, 0deg);
+                z-index: 1;
+            }
+
+            25% {
+                -webkit-transform: rotate3d(1, 0, 0, 90deg);
+                transform: rotate3d(1, 0, 0, 90deg);
+                z-index: 1;
+            }
+
+            26% {
+                z-index: 2;
+            }
+
+            50% {
+                -webkit-transform: rotate3d(1, 0, 0, 180deg);
+                transform: rotate3d(1, 0, 0, 180deg);
+                z-index: 2;
+            }
+
+            99% {
+                z-index: 2;
+            }
+
+            100% {
+                -webkit-transform: rotate3d(1, 0, 0, 360deg);
+                transform: rotate3d(1, 0, 0, 360deg);
+                z-index: -1;
+            }
+        }
+
+        @-o-keyframes lettercoverbehind {
+            0% {
+                -webkit-transform: rotate3d(1, 0, 0, 0deg);
+                transform: rotate3d(1, 0, 0, 0deg);
+                z-index: 1;
+            }
+
+            25% {
+                -webkit-transform: rotate3d(1, 0, 0, 90deg);
+                transform: rotate3d(1, 0, 0, 90deg);
+                z-index: 1;
+            }
+
+            26% {
+                z-index: 2;
+            }
+
+            50% {
+                -webkit-transform: rotate3d(1, 0, 0, 180deg);
+                transform: rotate3d(1, 0, 0, 180deg);
+                z-index: 2;
+            }
+
+            99% {
+                z-index: 2;
+            }
+
+            100% {
+                -webkit-transform: rotate3d(1, 0, 0, 360deg);
+                transform: rotate3d(1, 0, 0, 360deg);
+                z-index: -1;
+            }
+        }
+
+        @-moz-keyframes lettercoverbehind {
+            0% {
+                -webkit-transform: rotate3d(1, 0, 0, 0deg);
+                transform: rotate3d(1, 0, 0, 0deg);
+                z-index: 1;
+            }
+
+            25% {
+                -webkit-transform: rotate3d(1, 0, 0, 90deg);
+                transform: rotate3d(1, 0, 0, 90deg);
+                z-index: 1;
+            }
+
+            26% {
+                z-index: 2;
+            }
+
+            50% {
+                -webkit-transform: rotate3d(1, 0, 0, 180deg);
+                transform: rotate3d(1, 0, 0, 180deg);
+                z-index: 2;
+            }
+
+            99% {
+                z-index: 2;
+            }
+
+            100% {
+                -webkit-transform: rotate3d(1, 0, 0, 360deg);
+                transform: rotate3d(1, 0, 0, 360deg);
+                z-index: -1;
+            }
+        }
+
+        @keyframes lettercoverbehind {
+            0% {
+                -webkit-transform: rotate3d(1, 0, 0, 0deg);
+                transform: rotate3d(1, 0, 0, 0deg);
+                z-index: 1;
+            }
+
+            25% {
+                -webkit-transform: rotate3d(1, 0, 0, 90deg);
+                transform: rotate3d(1, 0, 0, 90deg);
+                z-index: 1;
+            }
+
+            26% {
+                z-index: 2;
+            }
+
+            50% {
+                -webkit-transform: rotate3d(1, 0, 0, 180deg);
+                transform: rotate3d(1, 0, 0, 180deg);
+                z-index: 2;
+            }
+
+            99% {
+                z-index: 2;
+            }
+
+            100% {
+                -webkit-transform: rotate3d(1, 0, 0, 360deg);
+                transform: rotate3d(1, 0, 0, 360deg);
+                z-index: -1;
+            }
+        }
+
+        .anchorlevel-lead-lettercover .front,
+        .anchorlevel-lead-lettercover .behind {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+
+            -webkit-transform-style: preserve-3d;
+            -moz-transform-style: preserve-3d;
+            -o-transform-style: preserve-3d;
+            -ms-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+
+            -webkit-transform-origin: center top;
+            -o-transform-origin: center top;
+            -moz-transform-origin: center top;
+            transform-origin: center top;
+        }
+        /*信封盖子正面*/
+        .anchorlevel-lead-lettercover .front {
+            background: url(https://gh-fe.oss-cn-beijing.aliyuncs.com/gtbg-fe/css3-demo/lettercover.png?v=20170215);
+            z-index: 2;
+        }
+
+        .anchorlevelletter-animate .front {
+            -webkit-animation: lettercoverfront 2.5s linear forwards;
+            -o-animation: lettercoverfront 2.5s linear forwards;
+            -moz-animation: lettercoverfront 2.5s linear forwards;
+            animation: lettercoverfront 2.5s linear forwards;
+        }
+
+        /*信封盖子反面*/
+        .anchorlevel-lead-lettercover .behind {
+            background: url(https://gh-fe.oss-cn-beijing.aliyuncs.com/gtbg-fe/css3-demo/lettercoverBehind1.png?v=20170215);
+            z-index: 1;
+        }
+
+        .anchorlevelletter-animate .behind {
+            -webkit-animation: lettercoverbehind 2.5s linear forwards;
+            -o-animation: lettercoverbehind 2.5s linear forwards;
+            -moz-animation: lettercoverbehind 2.5s linear forwards;
+            animation: lettercoverbehind 2.5s linear forwards;
+        }
+
+        /*lettercover end*/
+
+        /*anchorlevel-lead-letterpaper start*/
+        .anchorlevel-lead--open .anchorlevel-lead-letterpaper {
+            overflow: hidden;
+            position: absolute;
+            bottom: 0px;
+            left: 7px;
+            z-index: 15;
+            width: 584px;
+            padding: 50px;
+            height: 0px;
+            height: 410px\9;
+            background-color: #fbf0d7;
+            box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.2), 0px 0px 1px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        /*信纸向上移动动画*/
+        .anchorlevelletter-animate .anchorlevel-lead-letterpaper {
+            -webkit-animation: anchorlevelleadslideDown 1s linear 1.25s 1 normal both;
+            -o-animation: anchorlevelleadslideDown 1s linear 1.25s 1 normal both;
+            -moz-animation: anchorlevelleadslideDown 1s linear 1.25s 1 normal both;
+            animation: anchorlevelleadslideDown 1s linear 1.25s 1 normal both;
+        }
+
+        @-webkit-keyframes anchorlevelleadslideDown {
+            0% {
+                height: 0px;
+            }
+
+            100% {
+                height: 410px;
+            }
+        }
+
+        @-o-keyframes anchorlevelleadslideDown {
+            0% {
+                height: 0px;
+            }
+
+            100% {
+                height: 410px;
+            }
+        }
+
+        @-moz-keyframes anchorlevelleadslideDown {
+            0% {
+                height: 0px;
+            }
+
+            100% {
+                height: 410px;
+            }
+        }
+
+        @keyframes anchorlevelleadslideDown {
+            0% {
+                height: 0px;
+            }
+
+            100% {
+                height: 410px;
+            }
+        }
+
+        .anchorlevel-lead--anchorview .anchorlevel-lead-letterbgbottom {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            z-index: 20;
+            width: 700px;
+            height: 170px;
+            background-image: url(https://gh-fe.oss-cn-beijing.aliyuncs.com/gtbg-fe/css3-demo/letterbottombg.png?v=20170215);
+        }
+
+        .anchorlevel-lead--anchorview .anchorlevel-lead-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #000;
+            line-height: 30px;
+            padding: 0 5px;
+            border-bottom: 1px solid #ead8b0;
+        }
+
+        .anchorlevel-lead--anchorview .anchorlevel-lead-highlight {
+            color: #d2230c;
+        }
+
+        .anchorlevel-lead--anchorview .anchorlevel-lead-list {
+            font-size: 14px;
+            color: #5d4040;
+            max-height: 350px;
+            overflow: hidden;
+        }
+
+        .anchorlevel-lead--anchorview .anchorlevel-lead-list li {
+            line-height: 24px;
+            padding: 5px;
+            border-bottom: 1px solid #ead8b0;
+        }
+
+        .anchorlevel-lead--anchorview .anchorlevel-lead-list li.last {
+            border: none;
+        }
+
+        .anchorlevel-lead--anchorview .anchorlevel-lead-listtitle {
+            color: #3d2a2a;
+        }
+
+        /*anchorlevel-lead-letterpaper end*/
+
+        .anchorlevel-lead--open .anchorlevel-lead-light {
+            position: relative;
+            top: -225px;
+            z-index: 9;
+            width: 380px;
+            height: 322px;
+            margin: 0 auto;
+            -moz-opacity: 0;
+            opacity: 0;
+            opacity: 1\9\0;
+            background: url(https://gh-fe.oss-cn-beijing.aliyuncs.com/gtbg-fe/css3-demo/light.png?v=20170215) 0 0;
+        }
+
+        .anchorlevelletter-animate .anchorlevel-lead-light {
+            /*animation: transform 0.3s ease 2s;*/
+            -webkit-transform-origin: center center;
+            -o-transform-origin: center center;
+            -moz-transform-origin: center center;
+            transform-origin: center center;
+
+            -webkit-animation: anchorlevellight 0.5s linear 2.3s 1 normal forwards;
+            -o-animation: anchorlevellight 0.5s linear 2.3s 1 normal forwards;
+            -moz-animation: anchorlevellight 0.5s linear 2.3s 1 normal forwards;
+            animation: anchorlevellight 0.5s linear 2.3s 1 normal forwards;
+        }
+
+        /*黄色光向上移动*/
+        @keyframes anchorlevellight {
+            0% {
+                top: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0);
+                -o-transform: scale(0);
+                -moz-transform: scale(0);
+                transform: scale(0);
+            }
+
+            100% {
+                top: -210px;
+                -moz-opacity: 1;
+                opacity: 1;
+                -webkit-transform: scale(1);
+                -o-transform: scale(1);
+                -moz-transform: scale(1);
+                transform: scale(1);
+            }
+        }
+
+        @-webkit-keyframes anchorlevellight {
+            0% {
+                top: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0);
+                -o-transform: scale(0);
+                -moz-transform: scale(0);
+                transform: scale(0);
+            }
+
+            100% {
+                top: -210px;
+                -moz-opacity: 1;
+                opacity: 1;
+                -webkit-transform: scale(1);
+                -o-transform: scale(1);
+                -moz-transform: scale(1);
+                transform: scale(1);
+            }
+        }
+
+        @-o-keyframes anchorlevellight {
+            0% {
+                top: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0);
+                -o-transform: scale(0);
+                -moz-transform: scale(0);
+                transform: scale(0);
+            }
+
+            100% {
+                top: -210px;
+                -moz-opacity: 1;
+                opacity: 1;
+                -webkit-transform: scale(1);
+                -o-transform: scale(1);
+                -moz-transform: scale(1);
+                transform: scale(1);
+            }
+        }
+
+        @-moz-keyframes anchorlevellight {
+            0% {
+                top: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0);
+                -o-transform: scale(0);
+                -moz-transform: scale(0);
+                transform: scale(0);
+            }
+
+            100% {
+                top: -210px;
+                -moz-opacity: 1;
+                opacity: 1;
+                -webkit-transform: scale(1);
+                -o-transform: scale(1);
+                -moz-transform: scale(1);
+                transform: scale(1);
+            }
+        }
+
+        @keyframes anchorlevellight {
+            0% {
+                top: 0;
+                -moz-opacity: 0;
+                opacity: 0;
+                -webkit-transform: scale(0);
+                -o-transform: scale(0);
+                -moz-transform: scale(0);
+                transform: scale(0);
+            }
+
+            100% {
+                top: -210px;
+                -moz-opacity: 1;
+                opacity: 1;
+                -webkit-transform: scale(1);
+                -o-transform: scale(1);
+                -moz-transform: scale(1);
+                transform: scale(1);
+            }
+        }
+
+        .anchorlevel-lead--open .anchorlevel-lead-ribbon1 {
+            position: absolute;
+            top: 0px;
+            left: -49px;
+            width: 60px;
+            height: 132px;
+            z-index: 30;
+            -moz-opacity: 0;
+            opacity: 0;
+            opacity: 1\9\0;
+            background: url(https://gh-fe.oss-cn-beijing.aliyuncs.com/gtbg-fe/css3-demo/ribbon1.png?v=20170215);
+        }
+
+        .anchorlevel-lead--open .anchorlevel-lead-ribbon2 {
+            position: absolute;
+            right: -43px;
+            bottom: 48px;
+            width: 112px;
+            height: 195px;
+            -moz-opacity: 0;
+            opacity: 0;
+            opacity: 1\9\0;
+            background: url(https://gh-fe.oss-cn-beijing.aliyuncs.com/gtbg-fe/css3-demo/ribbon2.png?v=20170215);
+        }
+
+        .anchorlevel-lead--open .anchorlevel-lead-closebtn {
+            position: absolute;
+            top: -67px;
+            right: -25px;
+            width: 48px;
+            height: 38px;
+            z-index: 14;
+            background-position: -202px 0;
+            cursor: pointer;
+            -moz-opacity: 0;
+            opacity: 0;
+            opacity: 1\9\0;
+        }
+
+        /*丝带，关闭按钮出现动画*/
+        .anchorlevelletter-animate .anchorlevel-lead-ribbon1,
+        .anchorlevelletter-animate .anchorlevel-lead-ribbon2,
+        .anchorlevelletter-animate .anchorlevel-lead-closebtn {
+            -webkit-animation: ribbonShow 0.5s ease 2.3s 1 normal forwards;
+            -o-animation: ribbonShow 0.5s ease 2.3s 1 normal forwards;
+            -moz-animation: ribbonShow 0.5s ease 2.3s 1 normal forwards;
+            animation: ribbonShow 0.5s ease 2.3s 1 normal forwards;
+        }
+
+        @keyframes ribbonShow {
+            0% {
+                -moz-opacity: 0;
+                opacity: 0;
+            }
+
+            50% {
+                -moz-opacity: 0.5;
+                opacity: 0.5;
+            }
+
+            100% {
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+        }
+
+        @-webkit-keyframes ribbonShow {
+            0% {
+                -moz-opacity: 0;
+                opacity: 0;
+            }
+
+            50% {
+                -moz-opacity: 0.5;
+                opacity: 0.5;
+            }
+
+            100% {
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+        }
+
+        @-o-keyframes ribbonShow {
+            0% {
+                -moz-opacity: 0;
+                opacity: 0;
+            }
+
+            50% {
+                -moz-opacity: 0.5;
+                opacity: 0.5;
+            }
+
+            100% {
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+        }
+
+        @-moz-keyframes ribbonShow {
+            0% {
+                -moz-opacity: 0;
+                opacity: 0;
+            }
+
+            50% {
+                -moz-opacity: 0.5;
+                opacity: 0.5;
+            }
+
+            100% {
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+        }
+
+        @keyframes ribbonShow {
+            0% {
+                -moz-opacity: 0;
+                opacity: 0;
+            }
+
+            50% {
+                -moz-opacity: 0.5;
+                opacity: 0.5;
+            }
+
+            100% {
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+        }
+
+        /*IE678 信封动画定位最终状态，无动画效果*/
+        @media \0screen {
+            .anchorlevelletter-animate .anchorlevel-lead-box {
+                margin-top: -205px;
+            }
+
+            .anchorlevelletter-animate .anchorlevel-lead-lettercover {
+                display: none;
+                opacity: 0;
+                opacity: 0\9\0;
+                visibility: hidden;
+                z-index: -1;
+            }
+
+            .anchorlevelletter-animate .anchorlevel-lead-light {
+                top: -225px;
+                opacity: 1;
+                opacity: 1\9\0;
+            }
+
+            .anchorlevelletter-animate .anchorlevel-lead-ribbon1,
+            .anchorlevelletter-animate .anchorlevel-lead-ribbon2,
+            .anchorlevelletter-animate .anchorlevel-lead-closebtn {
+                opacity: 1;
+                opacity: 1\9\0;
+            }
+
+            .anchorlevelletter-animate .anchorlevel-lead-letterpaper {
+                height: 410px;
+            }
+        }
+
+        /*主播等级新手引导 end*/
+    </style>
+</head>
+
+<body>
+    <div id="anchorlevelLead" class="anchorlevel-lead anchorlevel-lead--anchorview anchorlevel-lead--close">
+        <div class="anchorlevel-lead-mask"></div>
+        <div class="anchorlevel-lead-box">
+            <div class="anchorlevel-lead-light"></div>
+            <div class="anchorlevel-lead-letterbg"></div>
+            <div class="anchorlevel-lead-letterbgbottom"></div>
+            <div class="anchorlevel-lead-ribbon anchorlevel-lead-ribbon1"></div>
+            <div class="anchorlevel-lead-ribbon anchorlevel-lead-ribbon2"></div>
+            <a id="closeBtn" class="anchorlevel-lead-closebtn" data-type-anchor="anchorlevel-lead-closebtn"></a>
+            <div class="anchorlevel-lead-letterpaper" >
+                <h2 class="anchorlevel-lead-title">亲爱的 <span class="anchorlevel-lead-highlight">李思思主播：</span></h2>
+                <ul class="anchorlevel-lead-list">
+                    <li>主播等级上线啦！从今天起，您将拥有一个<span class="anchorlevel-lead-highlight">全新的主播等级</span>！ </li>
+                    <li>主播等级反映着您在***的影响力，通过积累经验值来提升，经验值由获得的礼物价值换算： <span class="anchorlevel-lead-highlight">100鱼丸=1经验值，0.1鱼翅=1经验值</span></li>
+                    <li><span class="anchorlevel-lead-listtitle">新增主播任务：</span>在 个人中心—主播相关—主播等级 中查看 </li>
+                    <li><span class="anchorlevel-lead-listtitle">经验奖励：</span>每天单场***时长达到100分钟，奖励100经验值，每天最多奖励1次；每天累计***时长达300分钟，奖励300经验值</li>
+                    <li><span class="anchorlevel-lead-listtitle">保级任务：</span>每个等级有对应的保级任务，如未完成则扣除相应经验值，31天为一个保级周期 </li>
+                    <li class="last">快快呼唤水友们<span class="anchorlevel-lead-highlight">来一波火箭</span>吧！</li>
+                </ul>
+            </div>
+            <div class="anchorlevel-lead-lettercover">
+                <div class="front"></div>
+                <div class="behind"></div>
+            </div>
+            <a id="openBtn" class="anchorlevel-lead-btn" data-anchor-type="look-level-intro"> </a>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/ecmascript" src="lib/dom.js"></script>
+<script>
+    var oTarget = document.getElementById('anchorlevelLead');
+    
+    var timer = null;
+    function animate() {
+        DOM.removeClass(oTarget,'anchorlevel-lead--close')
+        DOM.addClass(oTarget, 'anchorlevel-lead--open');
+        timer && clearTimeout(timer);
+        timer = setTimeout(function () {
+            DOM.addClass(oTarget, 'anchorlevelletter-animate');
+        }, 800);
+    }
+    function bindEvet() {
+        var oCloseBtn = document.getElementById('closeBtn');
+        var oOpenBtn = document.getElementById('openBtn');
+        oCloseBtn.addEventListener('click', function() {
+            DOM.removeClass(oTarget,'anchorlevel-lead--open')
+            DOM.removeClass(oTarget, 'anchorlevelletter-animate');
+            DOM.addClass(oTarget, 'anchorlevel-lead--close');
+        });
+        oOpenBtn.addEventListener('click', function() {
+            animate();
+        });
+    }
+    bindEvet();
+</script>
