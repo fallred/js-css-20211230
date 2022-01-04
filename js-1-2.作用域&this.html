@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <title>this关键字</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+</head>
+
+<body>
+</body>
+
+</html>
+<script>
+    /*
+    	window.WhoAmI = "I'm the window object";
+     function Test() {     this.WhoAmI = "I'm the Test object"; 
+        this.Check1 = function() {  
+            alert(this.WhoAmI); // I'm the Test object 
+        };}Test.prototype.Check2 = function() {  
+       alert(this.WhoAmI); // I'm the Test object
+    };
+    var t = new Test();
+    t.Check1();
+    t.Check2();
+
+
+    alert(window.WhoAmI);
+    alert(this.WhoAmI); // I'm the window object
+    alert(window === this); // true
+
+    function TestThis() {     alert(this.WhoAmI); // I'm the window object  
+       alert(window === this); // true
+    }
+    TestThis();*/
+</script>
+<script>
+    //使用call或者apply从本质上来说，call或者apply一个javascript的方法，就是调用另一个对象的方法，我们通过一个例子来说明：
+    /*
+     function SetType(type) { 
+        this.WhoAmI = "I'm the "+type+" object";
+    }
+    var newObject = {};
+    SetType.call(newObject, "newObject");
+    alert(newObject.WhoAmI); // I'm the newObject object
+    var new2 = {};
+    SetType.apply(new2,["new2"]);
+    alert(new2.WhoAmI); // I'm the new2 object
+    //call和apply唯一的区别在于，call的参数需要一一传入，apply的参数是通过一个数组传入的。这就是’this’*/
+</script>
+<script>
+    var a, b;
+    (function() {
+        alert(a); //undefined
+        alert(b); //undefined
+        var a = b = 3;
+        alert(a); //3
+        alert(b); //3
+    })();
+    alert(a); //undefined
+    alert(b); //3
+</script>

@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>拖拽</title>
+    <style type="text/css">
+        div {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            top: 150px;
+            left: 150px;
+            background: #03F;
+            cursor: move;
+            user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="div1"><img src="img/default.gif" width="100" height="100"></div>
+    <div style="background:green; top:50px;">drag</div>
+    <div style="background:black; top:50px; left:0">drag</div>
+    <div style="background:yellow; top:150px; left:50px;">drag</div>
+    <div style="background:purple; top:90px; left:70px;">drag</div>
+    <div style="background:gray; top:0px; left:10px;">drag</div>
+    <div style=" background:pink; top:77px; left:330px">drag</div>
+</body>
+
+</html>
+<script>
+    function on(ele, type, fn) {
+        ele.addEventListener(type, fn, false);
+    }
+
+    function off(ele, type, fn) {
+        ele.removeEventListener(type, fn, false);
+    }
+    var eles = document.getElementsByTagName('div');
+    for (var i = 0; i < eles.length; i++) {
+        // eles[i].addEventListener('mousedown', down, false);
+        on(eles[i], 'mousedown', down);
+    }
+    //方法运行时this关键字指向问题
+    function processFn(obj, fn) {
+        return function(e) {
+            fn.call(obj, e)
+        }
+    }
+    var zIndex = 9;
+    //准备拖拽
+    function down(e) {
+        //获取鼠标的位置
+        this.mx = e.pageX; //鼠标原始位置
+        this.my = e.pageY;
+        //获取盒子的位置
+        this.x = this.offsetLeft; //盒子原始位置
+        this.y = this.offsetTop;
+        //解决在拖动时，鼠标丢掉的问题
+        if (this.setCapture) {
+            //在IE中
+            this.setCapture();
+            on(this, 'mousemove', move);
+            on(this, 'mouseup', up);
+            this.addEventListener('mousedown', down, false);
+        } else {
+            this.MOVE = processFn(this, move);
+            this.UP = processFn(this, up);
+            on(document, 'mousemove', this.MOVE);
+            on(document, 'mouseup', this.UP);
+        }
+        //每个按下去的元素 显示级别应该最高
+        this.style.zIndex = ++zIndex;
+        //并且要阻止事件默认行为
+        e.preventDefault();
+    }
+
+    function move(e) {
+        //判断盒子是否有位移。如果没有位移表示盒子是首次被移动
+        if (this.distance == undefined) {
+            this.distance = e.pageX - this.mx;
+        } else {
+            this.distance = e.pageX - this.previousX; //当前鼠标的位置和上一次鼠标所在的位置的距离
+        }
+        this.style.left = this.x + (e.pageX - this.mx) + 'px';
+        this.style.top = this.y + (e.pageY - this.my) + 'px';
+        //记录鼠标移动时上一次的位置
+        this.previousX = e.pageX;
+    }
+
+    function up() {
+        if (this.releaseCapture) {
+            this.releaseCapture();
+            off(this, 'mousemove', move);
+            off(this, 'mouseup', up);
+        } else {
+            off(document, 'mousemove', this.MOVE);
+            off(document, 'mouseup', this.UP);
+        }
+        fly.call(this);
+        console.log(this.distance);
+    }
+
+    function fly(e) {
+        this.style.left = this.offsetLeft + this.distance + 'px';
+        //每次减小运动的速度。。减速运动
+        this.distance *= .93;
+        //断运动的条件
+        if (Math.abs(this.distance) > 0.5) {
+            var FLY = processFn(this, arguments.callee);
+            window.setTimeout(FLY, 30);
+        }
+
+    }
+</script>
