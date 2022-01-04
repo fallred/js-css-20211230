@@ -1,0 +1,164 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>无标题文档</title>
+    <style type="text/css">
+        #div1 {
+            width: 500px;
+            height: 500px;
+            background: red;
+        }
+        
+        #div2 {
+            width: 200px;
+            height: 200px;
+            background: green;
+        }
+    </style>
+</head>
+
+<body style="height:2000px;">
+    <div id="div1">
+        <div id="div2">
+
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+    /**
+        Netscape说element1上的事件首先发生。这被称为事件捕获。 false，由外向里触发
+        Microsoft坚持element2上的事件优先。这被称为事件冒泡。true，由里向外触发
+                            | |
+        ---------------| |-----------------
+        | element1     | |                |
+        |   -----------| |-----------     |
+        |   |element2  \ /          |     |
+        |   -------------------------     |
+        |        Event CAPTURING          |
+        -----------------------------------
+                        / \
+        ---------------| |-----------------
+        | element1     | |                |
+        |   -----------| |-----------     |
+        |   |element2  | |          |     |
+        |   -------------------------     |
+        |        Event BUBBLING           |
+        -----------------------------------
+    */
+    function fn1(e) {
+        å
+        alert(arguments.callee);
+        e.stopPropagation();
+    }
+
+    function fn2(e) {
+        alert(arguments.callee);
+        e.stopPropagation();
+    }
+
+    function fn3(e) {
+        alert(arguments.callee);
+        e.stopPropagation();
+    }
+
+    function fn4(e) {
+        alert(arguments.callee);
+        e.stopPropagation();
+    }
+
+    var oDiv1 = document.getElementById('div1');
+    var oDiv2 = document.getElementById('div2');
+    // on(oDiv, 'click', fn1);
+    // on(oDiv, 'click', fn2);
+    // on(oDiv, 'click', fn3);
+    // on(oDiv, 'click', fn4);
+
+    oDiv1.addEventListener('click', fn1, false);
+    oDiv1.addEventListener('click', fn2, false);
+    // oDiv1.addEventListener('click', fn3, false);
+    // oDiv1.addEventListener('click', fn4, false);
+
+    oDiv2.addEventListener('click', fn3, false);
+    oDiv2.addEventListener('click', fn4, false);
+
+    function bind(ele, type, handler) {
+        if (ele.addEventListener) {
+            ele.addEventListener(type, handler, false);
+        } else if (ele.attachEvent) {
+            //解决this关键字
+            function fnTemp() {
+                handler.call(ele);
+            }
+            //如何能找到化妆之后的handler
+            fnTemp.photo = handler;
+            //初始化一个池子，用来装绑定的方法
+            if (!ele['a' + type]) ele['a' + type] = [];
+            //并将这个池子的引用赋给变量a
+            var a = ele['a' + type];
+            //循环遍历数组a
+            for (var i = 0; i < a.length; i++) {
+                //如果有重复绑定的方法（fire）就退出
+                if (a[i].photo == handler) return;
+            }
+            //将绑定的方法放入数组中
+            a.push(fnTemp);
+            //将fnTemp方法绑定到'on'+type事件上
+            ele.attachEvent('on' + type, fnTemp);
+        }
+    }
+
+
+    function on(ele, type, handler) {
+        //先判断自定义属性数组是否存在
+        if (!ele['a' + type]) {
+            ele['a' + type] = [];
+        }
+        //获取自定义属性数组的引用
+        var a = ele['a' + type];
+        for (var i = 0; i < a.length; i++) {
+            if (a[i] == handler) return;
+        }
+        a.push(handler);
+        bind(ele, type, fire);
+    }
+
+    function fire(e) {
+        //获取事件对象
+        e = e || window.event;
+        //事件类型
+        var type = e.type;
+        //获取当前对象
+        var ele = this;
+        var a = ele['a' + type];
+        //判断a是否存在
+        if (a && a.length)
+        //循环执行池子里面的方法
+            for (var i = 0; i < a.length; i++) {
+            //判断数组的每一项是否存在
+            if (a[i])
+                a[i].call(this, e);
+        }
+    }
+
+    function off(ele, type, handler) {
+        if (ele.removeEventListener) {
+            ele.removeEventListener(type, handler, false);
+        } else if (ele.datachEvent) {
+            var a = ele['a' + type];
+            if (a && a.length) {
+                // var aTemp=[];
+                for (var i = 0; i < a.length; i++) {
+                    if (a[i] == handler) {
+                        //  a.splice(i);
+                        a[i] = null;
+                        return;
+                    }
+                }
+            }
+        }
+    }
+</script>

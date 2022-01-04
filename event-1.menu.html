@@ -1,0 +1,127 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>事件---菜单</title>
+    <style type="text/css">
+        li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+
+<body style="background:#ccc">
+    <div id="menu" style="width:240px;background:#fff">
+        <ul>
+            <li><span>第一级第一个</span>
+                <ul>
+                    <li><span>第二级第一个</span></li>
+                    <li><span>第二级第二个</span>
+                        <ul>
+                            <li><span>第三级第一个</span></li>
+                            <li><span>第三级第二个</span></li>
+                            <li><span>第三级第三个</span></li>
+                            <li><span>第三级第四个</span></li>
+                        </ul>
+                    </li>
+                    <li><span>第二级第三个</span></li>
+                    <li><span>第二级第四个</span></li>
+                </ul>
+            </li>
+            <li><span>第一级第二个</span></li>
+            <li><span>第一级第三个</span>
+                <ul>
+                    <li><span>第二级第一个</span></li>
+                    <li><span>第二级第二个</span></li>
+                    <li><span>第二级第三个</span>
+                        <ul>
+                            <li><span>第三级第一个</span></li>
+                            <li><span>第三级第二个</span></li>
+                            <li><span>第三级第三个</span></li>
+                            <li><span>第三级第四个</span></li>
+                        </ul>
+                    </li>
+                    <li><span>第二级第四个</span></li>
+                </ul>
+            </li>
+            <li><span>第一级第四个</span></li>
+        </ul>
+    </div>
+</body>
+
+</html>
+<script type="text/ecmascript" src="DOM.js"></script>
+<script type="text/ecmascript">
+    var menu = {
+        doms: {},
+        getDoms() {
+            // 获取最外层div
+            var oMenu = document.getElementById('menu');
+            // 取出所有的一级菜单Li
+            var oLis = oMenu.getElementsByTagName('li');
+            this.doms = {
+                oMenu,
+                oLis
+            };
+        },
+        init: function() {
+            this.getDoms();
+            this.render();
+            this.bindEvent();
+        },
+        render: function() {
+            // 循环遍历这些li
+            for (var i = 0; i < this.doms.oLis.length; i++) {
+                var oLi = this.doms.oLis.item(i);
+                //获取一级菜单下的span菜单项 
+                var oSpan = DOM.Children(oLi, 'span')[0];
+                //获取一级菜单下的子菜单
+                var oUls = DOM.Children(oLi, 'ul');
+                //判断是否有子菜单
+                if (oUls.length > 0) {
+                    //如果存在子菜单，则将子菜单关闭，并将该菜单项设置为绿色
+                    oUls[0].style.display = 'none';
+                    oSpan.style.backgroundColor = 'green';
+                } else {
+                    oSpan.style.backgroundColor = '#ccc';
+                }
+            }
+        },
+        bindEvent: function() {
+            //点击事件
+            this.doms.oMenu.onclick = function(e) {
+                //获取事件对象
+                e = e || window.event;
+                //获取事件发生在哪个对象上
+                var t = e.target || e.srcElement;
+                //如果事件源不是发生在span上，则返回
+                if (!t.nodeName == 'SPAN') return;
+                //获取子菜单
+                var oul = DOM.siblings(t, 'ul')[0];
+                if (oul) {
+                    //如果存在子菜单
+                    if (oul.style.display == 'none') {
+                        //且子菜单是隐藏的
+                        oul.style.display = '';
+
+                    } else {
+                        //子菜单是显示的
+                        oul.style.display = 'none';
+                        //并且获取ul下面的子菜单项
+                        var ospan = DOM.Children(oul, 'span')[0];
+                        //var olis=DOM.Children(ul,'li');
+                        //获取子菜单下面是否还有子菜单标签Ul,此时不能用Children方法
+                        var ouls = oul.getElementsByTagName('ul');
+                        for (var i = 0; i < ouls.length; i++) {
+                            //循环遍历下面的所有子菜单，并将以前打开过的子菜单全部关闭
+                            ouls.item(i).style.display = 'none';
+                        }
+                    }
+                }
+            }
+        }
+    };
+    menu.init();
+</script>
